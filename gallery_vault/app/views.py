@@ -77,3 +77,19 @@ def index(req):
         return render(req,'index.html',{'file':data})
     else:
         return redirect(login)
+    
+def upload(req):
+    if 'user' in req.session:
+        if 'imges' in req.FILES:
+            img=req.FILES['imges']
+            data=UploadedFile.objects.create(file=img)
+            data.save()
+        else:
+            print("File key 'imges' not found in req.FILES")
+    return render(req,"upload.html")
+
+
+def user_logout(req):
+    logout(req)
+    req.session.flush()
+    return redirect(user_login)
